@@ -26,3 +26,10 @@ out/
 *.iml
 *.ipr
 *.iws
+
+## DB credentials 
+dbconfig.txt
+
+ActionMap.docx
+
+*.tmp
