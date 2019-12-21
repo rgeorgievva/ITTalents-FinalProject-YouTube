@@ -33,7 +33,7 @@ public enum DBManager {
     }
 
     private void setCredentials() {
-        File configFile = new File("C:\\Users\\Dell\\Desktop\\ITTalents-FinalProject-YouTube\\YouTube\\src\\main\\resources\\dbconfig.txt");
+        File configFile = new File("src\\main\\resources\\dbconfig.txt");
 
         try (FileInputStream fis = new FileInputStream(configFile);
              Scanner sc = new Scanner(fis)

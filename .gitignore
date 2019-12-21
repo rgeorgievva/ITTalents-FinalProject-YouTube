@@ -9,6 +9,7 @@ hs_err_pid*
 
 ## Maven
 target/
+pom.xml
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -30,6 +31,8 @@ out/
 ## DB credentials 
 dbconfig.txt
 
-ActionMap.docx
+*.docx
+
+Demo.java
 
 *.tmp
