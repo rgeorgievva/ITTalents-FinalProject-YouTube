@@ -31,8 +31,10 @@ out/
 ## DB credentials 
 dbconfig.txt
 
+##
 *.docx
 
+##
 Demo.java
 
 *.tmp

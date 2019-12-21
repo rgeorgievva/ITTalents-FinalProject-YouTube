@@ -110,4 +110,34 @@ public class UserDAO {
             throw new UserException("Could not get users with this username! Please try again later!", e);
         }
     }
+
+    // subscribe to user
+    public void subscribeToUser(User subscriber, User subscribedTo) throws UserException {
+        try {
+            Connection connection = DBManager.INSTANCE.getConnection();
+            String sql = "INSERT INTO subscriptions (subscriber_id, subscribed_to_id) VALUES (?, ?);";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, subscriber.getId());
+                statement.setInt(2, subscribedTo.getId());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new UserException("Could not subscribe. Please try again later!", e);
+        }
+    }
+
+    // unsubscribe from user
+    public void unsubscribeFromUser(User subscriber, User subscribedTo) throws UserException {
+        try {
+            Connection connection = DBManager.INSTANCE.getConnection();
+            String sql = "DELETE FROM subscriptions WHERE subscriber_id = ? AND subscribed_to_id = ?;";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, subscriber.getId());
+                statement.setInt(2, subscribedTo.getId());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new UserException("Could not unsubscribe. Please try again later!", e);
+        }
+    }
 }
