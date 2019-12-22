@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Video {
 
-    private long id;
+    private int    id;
     private String title;
     private String description;
     private String videoUrl;
@@ -15,11 +15,11 @@ public class Video {
     private long categoryId;
 
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

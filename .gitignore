@@ -36,5 +36,6 @@ dbconfig.txt
 
 ##
 Demo.java
+pom.xml
 
 *.tmp
