@@ -10,15 +10,11 @@ public class Comment {
     private long owner_id;
     private long replied_to_id;
 
-    public Comment(String text, long video_id, long owner_id) {
-        this.text = text;
-        this.video_id = video_id;
-        this.owner_id = owner_id;
-    }
 
-    public Comment(String text, LocalDateTime time_posted, long video_id, long owner_id, long replied_to_id) {
-       this(text, video_id, owner_id);
-        this.replied_to_id = replied_to_id;
+    public Comment(String text, long owner_id) {
+        this.text = text;
+        this.owner_id = owner_id;
+        this.time_posted = LocalDateTime.now();
     }
 
     public long getId() {
