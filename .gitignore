@@ -38,3 +38,7 @@ dbconfig.txt
 Demo.java
 
 *.tmp
+
+videos/
+
+thumbnails/

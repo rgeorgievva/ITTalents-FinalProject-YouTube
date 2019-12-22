@@ -4,22 +4,43 @@ import java.time.LocalDateTime;
 
 public class Video {
 
-    private long id;
+    private int id;
     private String title;
     private String description;
     private String videoUrl;
     private String thumbnailUrl;
     private long duration;
     private LocalDateTime dateUploaded;
-    private long ownerId;
-    private long categoryId;
+    private int ownerId;
+    private int categoryId;
 
+    public Video(String title, String description, String videoUrl, String thumbnailUrl, long duration, int categoryId) {
+        this.title = title;
+        this.description = description;
+        this.videoUrl = videoUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.duration = duration;
+        this.categoryId = categoryId;
+    }
 
-    public long getId() {
+    public Video(int id, String title, String description, String videoUrl, String thumbnailUrl, long duration,
+                 LocalDateTime dateUploaded, int ownerId, int categoryId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.videoUrl = videoUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.duration = duration;
+        this.dateUploaded = dateUploaded;
+        this.ownerId = ownerId;
+        this.categoryId = categoryId;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -71,19 +92,19 @@ public class Video {
         this.dateUploaded = dateUploaded;
     }
 
-    public long getOwnerId() {
+    public int getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
 
-    public long getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 }
