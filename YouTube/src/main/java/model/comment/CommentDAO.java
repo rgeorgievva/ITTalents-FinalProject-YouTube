@@ -62,7 +62,23 @@ public class CommentDAO {
         }
     }
 
-
+         public void editComment(String editedText, Comment comment){
+        try {
+            Connection connection = DBManager.INSTANCE.getConnection();
+            comment.setText(editedText);
+            String sql = "update youtube.comments set text = ? where id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1, comment.getText());
+                preparedStatement.setInt(2, (int) comment.getId());
+                preparedStatement.executeUpdate();
+            }
+            catch (SQLException e){
+                System.out.println("Comment couldn't be edited");
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection to the database could not not established");
+        }
+    }
 
 
 }
