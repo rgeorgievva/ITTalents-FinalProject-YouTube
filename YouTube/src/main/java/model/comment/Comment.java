@@ -3,25 +3,25 @@ package model.comment;
 import java.time.LocalDateTime;
 
 public class Comment {
-    private long id;
+    private int    id;
     private String text;
     private LocalDateTime time_posted;
-    private long video_id;
-    private long owner_id;
-    private long replied_to_id;
+    private int  video_id;
+    private int owner_id;
+    private int replied_to_id;
 
 
-    public Comment(String text, long owner_id) {
+    public Comment(String text, int owner_id) {
         this.text = text;
         this.owner_id = owner_id;
         this.time_posted = LocalDateTime.now();
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -41,27 +41,27 @@ public class Comment {
         this.time_posted = time_posted;
     }
 
-    public long getVideo_id() {
+    public int getVideo_id() {
         return video_id;
     }
 
-    public void setVideo_id(long video_id) {
+    public void setVideo_id(int video_id) {
         this.video_id = video_id;
     }
 
-    public long getOwner_id() {
+    public int getOwner_id() {
         return owner_id;
     }
 
-    public void setOwner_id(long owner_id) {
+    public void setOwner_id(int owner_id) {
         this.owner_id = owner_id;
     }
 
-    public long getReplied_to_id() {
+    public int getReplied_to_id() {
         return replied_to_id;
     }
 
-    public void setReplied_to_id(long replied_to_id) {
+    public void setReplied_to_id(int replied_to_id) {
         this.replied_to_id = replied_to_id;
     }
 }
