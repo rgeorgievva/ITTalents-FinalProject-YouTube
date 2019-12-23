@@ -7,6 +7,7 @@ import model.user.User;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class VideoDAO {
@@ -298,6 +299,41 @@ public class VideoDAO {
         } catch (SQLException e) {
             throw new VideoException("Could not get videos uploaded by " + user.getUsername() +
                     ". Please try again later.", e);
+        }
+    }
+
+    // get all videos sorted by time uploaded and number likes
+    public List<Video> getAllByDateUploadedAndNumberLikes() throws VideoException {
+        try {
+            List<Video> videos = new ArrayList<>();
+            Connection connection = DBManager.INSTANCE.getConnection();
+            String sql = "SELECT v.*, COUNT(*) AS total_likes " +
+                    "FROM users_liked_videos AS l " +
+                    "JOIN videos AS v ON l.video_id = v.id " +
+                    "GROUP BY l.video_id " +
+                    "ORDER BY DATE(v.date_uploaded) DESC, total_likes DESC;";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    Video video = new Video(result.getInt("id"),
+                            result.getString("title"),
+                            result.getString("description"),
+                            result.getString("video_url"),
+                            result.getString("thumbnail_url"),
+                            result.getLong("duration"),
+                            result.getTimestamp("date_uploaded").toLocalDateTime(),
+                            result.getInt("owner_id"),
+                            result.getInt("category_id"));
+                    videos.add(video);
+                }
+                if (videos.isEmpty()) {
+                    throw new VideoException("No videos uploaded!");
+                }
+                return Collections.unmodifiableList(videos);
+            }
+        } catch (SQLException e) {
+            throw new VideoException("Could not get all videos by uploading date and number likes. Please " +
+                    "try again later.", e);
         }
     }
 }
