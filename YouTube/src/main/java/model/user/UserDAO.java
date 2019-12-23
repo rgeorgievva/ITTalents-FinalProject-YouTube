@@ -82,6 +82,27 @@ public class UserDAO {
         }
     }
 
+    // edit user profile
+    public void editProfile(User user) throws UserException {
+        try {
+            Connection connection = DBManager.INSTANCE.getConnection();
+            String sql = "UPDATE users SET  user_name = ?, first_name = ?, last_name = ?, email = ?, password = md5(?) " +
+                    "WHERE id = ?;";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, user.getUsername());
+                statement.setString(2, user.getFirstName());
+                statement.setString(3, user.getLastName());
+                statement.setString(4, user.getEmail());
+                statement.setString(5, user.getPassword());
+                statement.setInt(6, user.getId());
+                statement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new UserException("Could not edit profile. Please try again later.", e);
+        }
+    }
+
     // find all users with given username
     public List<User> findByUsername(String username) throws UserException {
         try {
