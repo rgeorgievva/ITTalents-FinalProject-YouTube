@@ -3,16 +3,23 @@ package model.playlist;
 import java.time.LocalDateTime;
 
 public class Playlist {
-    private long id;
+    private int    id;
     private String title;
     private LocalDateTime date_created;
-    private long owner_id;
+    private int           owner_id;
 
-    public long getId() {
+    public Playlist(int id, String title, LocalDateTime date_created, int owner_id) {
+        this.id = id;
+        this.title = title;
+        this.date_created = date_created;
+        this.owner_id = owner_id;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -32,11 +39,11 @@ public class Playlist {
         this.date_created = date_created;
     }
 
-    public long getOwner_id() {
+    public int getOwner_id() {
         return owner_id;
     }
 
-    public void setOwner_id(long owner_id) {
+    public void setOwner_id(int owner_id) {
         this.owner_id = owner_id;
     }
 }

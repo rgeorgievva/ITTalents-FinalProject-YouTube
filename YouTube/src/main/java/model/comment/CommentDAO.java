@@ -78,18 +78,43 @@ public class CommentDAO {
     }
 
     public void deleteComment(Comment comment) throws CommentException {
-        try {
+        try{
             Connection connection = DBManager.INSTANCE.getConnection();
-            setForeignKeysCheckToZero(connection);
-            String sql = "delete from youtube.comments where id = ? or replied_to_id = ?;";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                preparedStatement.setInt(1, comment.getId());
-                preparedStatement.setInt(2, comment.getId());
-                preparedStatement.executeUpdate();
+            String deleteFromComments = "delete from youtube.comments where id = ? or replied_to_id = ?;";
+            String deleteFromLikes = "delete from youtube.users_liked_comments where comment_id = ?";
+            String deleteFromDislikes = "delete from youtube.users_disliked_comments where comment_id = ?";
+
+            try (PreparedStatement deleteFromCommentsStatement = connection.prepareStatement(deleteFromComments);
+                 PreparedStatement deleteFromLikesStatement = connection.prepareStatement(deleteFromLikes);
+                 PreparedStatement deleteFromDislikesStatement = connection.prepareStatement(deleteFromDislikes)) {
+
+                connection.setAutoCommit(false);
+
+                setForeignKeysCheckToZero(connection);
+
+                deleteFromCommentsStatement.setInt(1, comment.getId());
+                deleteFromCommentsStatement.setInt(2, comment.getId());
+                deleteFromCommentsStatement.executeUpdate();
+
+                setForeignKeysCheckToOne(connection);
+
+                deleteFromDislikesStatement.setInt(1, comment.getId());
+                deleteFromDislikesStatement.executeUpdate();
+
+                deleteFromLikesStatement.setInt(1, comment.getId());
+                deleteFromLikesStatement.executeUpdate();
+
+                connection.commit();
+
+            }catch (SQLException e) {
+                connection.rollback();
+                throw new CommentException("Something went wrong with deleting comment or its reactions", e);
             }
-            setForeignKeysCheckToOne(connection);
+            finally {
+                connection.setAutoCommit(true);
+            }
         } catch (SQLException e) {
-            throw new CommentException("Comment couldn't be deleted");
+            throw new CommentException("Comment couldn't be deleted", e);
         }
     }
 
