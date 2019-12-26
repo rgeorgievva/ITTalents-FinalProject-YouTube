@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class Playlist {
     private int    id;
-    private String title;
-    private LocalDateTime date_created;
-    private int           owner_id;
+    private String        title;
+    private LocalDateTime dateCreated;
+    private int           ownerId;
 
-    public Playlist(int id, String title, LocalDateTime date_created, int owner_id) {
+    public Playlist(int id, String title, LocalDateTime dateCreated, int ownerId) {
         this.id = id;
         this.title = title;
-        this.date_created = date_created;
-        this.owner_id = owner_id;
+        this.dateCreated = dateCreated;
+        this.ownerId = ownerId;
     }
 
     public int getId() {
@@ -31,19 +31,19 @@ public class Playlist {
         this.title = title;
     }
 
-    public LocalDateTime getDate_created() {
-        return date_created;
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
     }
 
-    public void setDate_created(LocalDateTime date_created) {
-        this.date_created = date_created;
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public int getOwner_id() {
-        return owner_id;
+    public int getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(int owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 }

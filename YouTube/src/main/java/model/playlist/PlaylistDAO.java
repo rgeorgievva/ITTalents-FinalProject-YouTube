@@ -5,7 +5,6 @@ import model.exceptions.PlaylistException;
 import model.video.Video;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,8 +28,8 @@ public class PlaylistDAO {
                      "values (?,?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, playlist.getTitle());
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(playlist.getDate_created()));
-            preparedStatement.setInt(3, playlist.getOwner_id());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(playlist.getDateCreated()));
+            preparedStatement.setInt(3, playlist.getOwnerId());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
