@@ -58,15 +58,10 @@ public class PlaylistDAO {
     public void deletePlaylist(Playlist playlist) throws PlaylistException {
         try {
             Connection connection = DBManager.INSTANCE.getConnection();
-            String deleteVideosSql = "delete from videos_in_playlist where playlist_id = ?;";
             String deletePlaylistSql = "delete from youtube.playlists where id = ?;";
-            try(PreparedStatement deleteAllVideos = connection.prepareStatement(deleteVideosSql);
-            PreparedStatement deletePlaylist = connection.prepareStatement(deletePlaylistSql)){
+            try(PreparedStatement deletePlaylist = connection.prepareStatement(deletePlaylistSql)){
 
                 connection.setAutoCommit(false);
-
-                deleteAllVideos.setInt(1, playlist.getId());
-                deleteAllVideos.executeUpdate();
 
                 deletePlaylist.setInt(1, playlist.getId());
                 deletePlaylist.executeUpdate();

@@ -81,28 +81,14 @@ public class CommentDAO {
         try{
             Connection connection = DBManager.INSTANCE.getConnection();
             String deleteFromComments = "delete from youtube.comments where id = ? or replied_to_id = ?;";
-            String deleteFromLikes = "delete from youtube.users_liked_comments where comment_id = ?";
-            String deleteFromDislikes = "delete from youtube.users_disliked_comments where comment_id = ?";
 
-            try (PreparedStatement deleteFromCommentsStatement = connection.prepareStatement(deleteFromComments);
-                 PreparedStatement deleteFromLikesStatement = connection.prepareStatement(deleteFromLikes);
-                 PreparedStatement deleteFromDislikesStatement = connection.prepareStatement(deleteFromDislikes)) {
+            try (PreparedStatement deleteFromCommentsStatement = connection.prepareStatement(deleteFromComments);) {
 
                 connection.setAutoCommit(false);
-
-                setForeignKeysCheckToZero(connection);
 
                 deleteFromCommentsStatement.setInt(1, comment.getId());
                 deleteFromCommentsStatement.setInt(2, comment.getId());
                 deleteFromCommentsStatement.executeUpdate();
-
-                setForeignKeysCheckToOne(connection);
-
-                deleteFromDislikesStatement.setInt(1, comment.getId());
-                deleteFromDislikesStatement.executeUpdate();
-
-                deleteFromLikesStatement.setInt(1, comment.getId());
-                deleteFromLikesStatement.executeUpdate();
 
                 connection.commit();
 
@@ -122,23 +108,19 @@ public class CommentDAO {
         try {
             Connection connection = DBManager.INSTANCE.getConnection();
             if(commentIsAlreadyLiked(user, comment)){
-               setForeignKeysCheckToZero(connection);
                 String unlike = "delete from youtube.users_liked_comments where user_id = ? and comment_id = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(unlike);
                 preparedStatement.setInt(1, user.getId());
                 preparedStatement.setInt(2, comment.getId());
                 preparedStatement.executeUpdate();
-                setForeignKeysCheckToOne(connection);
             }
             else {
                 if(commentIsAlreadyDisliked(user, comment)){
-                    setForeignKeysCheckToZero(connection);
                     String sql = "delete from youtube.users_disliked_comments where user_id = ? and comment_id = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
                     preparedStatement.setInt(1, user.getId());
                     preparedStatement.setInt(2, comment.getId());
                     preparedStatement.executeUpdate();
-                    setForeignKeysCheckToOne(connection);
                 }
                 String like = "insert into youtube.users_liked_comments values (? , ?);";
                 PreparedStatement preparedStatement = connection.prepareStatement(like);
@@ -156,23 +138,19 @@ public class CommentDAO {
         try {
             Connection connection = DBManager.INSTANCE.getConnection();
             if(commentIsAlreadyDisliked(user, comment)){
-                setForeignKeysCheckToZero(connection);
                 String sql = "delete from youtube.users_disliked_comments where user_id = ? and comment_id = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, user.getId());
                 preparedStatement.setInt(2, comment.getId());
                 preparedStatement.executeUpdate();
-                setForeignKeysCheckToOne(connection);
             }
             else {
                 if(commentIsAlreadyLiked(user, comment)){
-                    setForeignKeysCheckToZero(connection);
                     String unlike = "delete from youtube.users_liked_comments where user_id = ? and comment_id = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(unlike);
                     preparedStatement.setInt(1, user.getId());
                     preparedStatement.setInt(2, comment.getId());
                     preparedStatement.executeUpdate();
-                    setForeignKeysCheckToOne(connection);
                 }
                 String dislike = "insert into youtube.users_disliked_comments values (? , ?);";
                 PreparedStatement preparedStatement = connection.prepareStatement(dislike);
@@ -183,20 +161,6 @@ public class CommentDAO {
         } catch (SQLException e) {
             throw new CommentException("Could not dislike comment. Please, try again later.",e);
         }
-    }
-
-    //unlocks the table to delete constrained rows
-    private void setForeignKeysCheckToZero(Connection connection) throws SQLException {
-        String setFKChecksToZero = "set FOREIGN_KEY_CHECKS = 0;";
-        PreparedStatement preparedStatementFKZero = connection.prepareStatement(setFKChecksToZero);
-        preparedStatementFKZero.executeUpdate();
-    }
-
-    //locks the table to delete constrained rows
-    private void setForeignKeysCheckToOne(Connection connection) throws SQLException {
-        String setFKChecksToOne = "set FOREIGN_KEY_CHECKS = 1;";
-        PreparedStatement preparedStatementFKOne = connection.prepareStatement(setFKChecksToOne);
-        preparedStatementFKOne.executeUpdate();
     }
 
     //finds if the current comment is already liked
